@@ -16,28 +16,31 @@ const styles = {
   }
 };
 
-const Form = ({ input, submit }) => {
+const Form = ({ input, submit, name, age, email }) => {
   return (
     <div style={styles.container}>
       <input
         style={styles.input}
-        placeHolder="Friends Name"
+        placeholder="Friends Name"
         name="name"
         onChange={e => input(e)}
+        value={name}
       />
 
       <input
         style={styles.input}
-        placeHolder="Friends Age"
+        placeholder="Friends Age"
         name="age"
         onChange={e => input(e)}
+        value={age}
       />
 
       <input
         style={styles.input}
-        placeHolder="Friends Email"
+        placeholder="Friends Email"
         name="email"
         onChange={e => input(e)}
+        value={email}
       />
 
       <button style={styles.input} onClick={submit}>

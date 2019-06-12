@@ -38,25 +38,44 @@ class App extends Component {
   addFriend = () => {
     const friend = {
       name: this.state.name,
-      age: this.state.age,
+      age: parseInt(this.state.age),
       email: this.state.email
     };
 
-    axios.post("http://localhost:5000/friends", friend).then(() => {
-      axios.get("http://localhost:5000/friends").then(res => {
-        console.log(res.data);
-        this.setState({ friends: res.data });
-      });
-    });
+    if (friend.name !== "" && friend.age !== "" && friend.email !== "") {
+      axios
+        .post("http://localhost:5000/friends", friend)
+        .then(() => {
+          axios
+            .get("http://localhost:5000/friends")
+            .then(res => {
+              console.log(res.data);
+              this.setState({
+                friends: res.data,
+                name: "",
+                age: "",
+                email: ""
+              });
+            })
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
+    }
   };
 
   render() {
-    const { friends, showForm } = this.state;
+    const { friends, showForm, name, age, email } = this.state;
     return (
       <div className="App">
         <Nav showForm={this.showFormHandler} showList={this.showListHandler} />
         {showForm ? (
-          <Form input={this.inputHandler} submit={this.addFriend} />
+          <Form
+            input={this.inputHandler}
+            submit={this.addFriend}
+            name={name}
+            age={age}
+            email={email}
+          />
         ) : (
           <FriendsList friends={friends} />
         )}
