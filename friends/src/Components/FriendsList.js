@@ -2,8 +2,14 @@ import React from "react";
 
 import Friend from "./Friend";
 
-const FriendsList = () => {
-  return <div>Friends List</div>;
+const FriendsList = ({ friends }) => {
+  return (
+    <div>
+      {friends.map(friend => (
+        <Friend friend={friend} key={friend.id} />
+      ))}
+    </div>
+  );
 };
 
 export default FriendsList;
