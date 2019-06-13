@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Component } from "react";
+import axios from "axios";
 
 const styles = {
   container: {
@@ -16,38 +17,66 @@ const styles = {
   }
 };
 
-const Form = ({ input, submit, name, age, email }) => {
-  return (
-    <div style={styles.container}>
-      <input
-        style={styles.input}
-        placeholder="Friends Name"
-        name="name"
-        onChange={e => input(e)}
-        value={name}
-      />
+class Form extends Component {
+  state = {
+    name: "",
+    age: "",
+    email: ""
+  };
 
-      <input
-        style={styles.input}
-        placeholder="Friends Age"
-        name="age"
-        onChange={e => input(e)}
-        value={age}
-      />
+  inputHandler = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
-      <input
-        style={styles.input}
-        placeholder="Friends Email"
-        name="email"
-        onChange={e => input(e)}
-        value={email}
-      />
+  addFriend = () => {
+    const friend = {
+      name: this.state.name,
+      age: parseInt(this.state.age),
+      email: this.state.email
+    };
 
-      <button style={styles.input} onClick={submit}>
-        Submit
-      </button>
-    </div>
-  );
-};
+    if (friend.name !== "" && friend.age !== "" && friend.email !== "") {
+      axios
+        .post("http://localhost:5000/friends", friend)
+        .catch(err => console.log(err));
+    }
+  };
+
+  render() {
+    const { name, age, email } = this.state;
+
+    return (
+      <div style={styles.container}>
+        <input
+          style={styles.input}
+          placeholder="Friends Name"
+          name="name"
+          onChange={e => this.inputHandler(e)}
+          value={name}
+        />
+
+        <input
+          style={styles.input}
+          placeholder="Friends Age"
+          name="age"
+          onChange={e => this.inputHandler(e)}
+          value={age}
+        />
+
+        <input
+          style={styles.input}
+          placeholder="Friends Email"
+          name="email"
+          onChange={e => this.inputHandler(e)}
+          value={email}
+        />
+
+        <button style={styles.input} onClick={this.addFriend}>
+          Submit
+        </button>
+      </div>
+    );
+  }
+}
 
 export default Form;
