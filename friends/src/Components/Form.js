@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 
 const styles = {
   container: {
@@ -19,31 +18,54 @@ const styles = {
 
 class Form extends Component {
   state = {
-    name: "",
-    age: "",
-    email: ""
+    friend: this.props.active || {
+      name: "",
+      age: "",
+      email: ""
+    }
   };
 
+  componentDidUpdate(prevProps) {
+    if (this.props.active && prevProps.active !== this.props.active) {
+      this.setState({
+        name: this.props.active.name,
+        age: this.props.active.age,
+        email: this.props.active.email
+      });
+    }
+  }
+
   inputHandler = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    e.persist();
+    this.setState(prevState => ({
+      friend: { ...prevState.friend, [e.target.name]: e.target.value }
+    }));
   };
 
   addFriend = () => {
-    const friend = {
-      name: this.state.name,
-      age: parseInt(this.state.age),
-      email: this.state.email
-    };
+    if (
+      this.state.friend.name !== "" &&
+      this.state.friend.age !== "" &&
+      this.state.friend.email !== ""
+    ) {
+      this.props.addFriend(this.state.friendfriend);
+      this.props.history.push("/");
+    }
+  };
 
-    if (friend.name !== "" && friend.age !== "" && friend.email !== "") {
-      axios
-        .post("http://localhost:5000/friends", friend)
-        .catch(err => console.log(err));
+  handleSubmit = () => {
+    const friend = this.state.friend;
+
+    if (this.props.active) {
+      console.log(this.state.friend);
+      this.props.editFriend(friend);
+    } else {
+      this.addFriend();
     }
   };
 
   render() {
-    const { name, age, email } = this.state;
+    const { name, age, email } = this.state.friend;
 
     return (
       <div style={styles.container}>
@@ -71,8 +93,8 @@ class Form extends Component {
           value={email}
         />
 
-        <button style={styles.input} onClick={this.addFriend}>
-          Submit
+        <button style={styles.input} onClick={this.handleSubmit}>
+          {this.props.active ? "UPDATE" : "SUBMIT"}
         </button>
       </div>
     );

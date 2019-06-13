@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const styles = {
   container: {
@@ -15,15 +16,15 @@ const styles = {
   }
 };
 
-const Nav = ({ showForm, showList }) => {
+const Nav = () => {
   return (
     <div style={styles.container}>
-      <div style={styles.button} onClick={showList}>
-        Friends List
-      </div>
-      <div style={styles.button} onClick={showForm}>
-        Add Friend
-      </div>
+      <Link to="/">
+        <div style={styles.button}>Friends List</div>
+      </Link>
+      <Link to="friendForm">
+        <div style={styles.button}>Add Friend</div>
+      </Link>
     </div>
   );
 };
