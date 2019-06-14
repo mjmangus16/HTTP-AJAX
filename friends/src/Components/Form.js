@@ -48,7 +48,7 @@ class Form extends Component {
       this.state.friend.age !== "" &&
       this.state.friend.email !== ""
     ) {
-      this.props.addFriend(this.state.friendfriend);
+      this.props.addFriend(this.state.friend);
       this.props.history.push("/");
     }
   };
